@@ -14,6 +14,6 @@ RUN apt-get update &&\
 
 RUN pip install ino
 
-COPY ./goino /usr/local/goino
+COPY ./cino /usr/local/cino
 
-CMD /usr/local/goino
+CMD /usr/local/cino
