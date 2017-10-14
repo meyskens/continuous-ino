@@ -7,8 +7,8 @@ env:
         - DOCKER_REPO=maartje/continuous-ino
     matrix:
         - ARCH=amd64  QEMU_ARCH=x86_64  GO_ARCH=amd64
-        - ARCH=armhf  QEMU_ARCH=arm     GO_ARCH=armv6l
-        - ARCH=arm64  QEMU_ARCH=aarch64 GO_ARCH=arm64
+        - ARCH=armhf  QEMU_ARCH=arm     GO_ARCH=armv6l  GOARM=6 GOARCH=arm  GOOS=linux 
+        - ARCH=arm64  QEMU_ARCH=aarch64 GO_ARCH=arm64   GOARCH=arm64        GOOS=linux 
 
 before_install:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -20,6 +20,7 @@ before_script:
     - sudo apt-get -y install qemu-user-static
     - docker run --rm --privileged multiarch/qemu-user-static:register
 script:
+    - cd src && go get && go build ./ && mv ./scr ../cino && cd ../
     - sudo ./build.sh --arch="$ARCH" --qemuarch="$QEMU_ARCH" --qemuversion="$QEMU_VER" --repo="$DOCKER_REPO" --goarch="$GO_ARCH"
 after_success:
     - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"

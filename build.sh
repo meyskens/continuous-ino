@@ -6,9 +6,6 @@ for i in "$@"
         --arch=*)
             ARCH="${i#*=}"
         ;;
-        --version=*)
-            VERSION="${i#*=}"
-        ;;
         --qemuarch=*)
             QEMU_ARCH="${i#*=}"
         ;;
