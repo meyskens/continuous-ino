@@ -7,8 +7,8 @@ env:
         - QEMU_VER=v2.9.1
         - DOCKER_REPO=maartje/continuous-ino
     matrix:
-        - ARCH=amd64  QEMU_ARCH=x86_64  GO_ARCH=amd64
-        - ARCH=armhf  QEMU_ARCH=arm     GO_ARCH=armv6l  GOARM=6 GOARCH=arm  GOOS=linux 
+        - ARCH=amd64  QEMU_ARCH=x86_64  GO_ARCH=amd64   GOARM=6 GOARCH=amd64  GOOS=linux
+        - ARCH=armhf  QEMU_ARCH=arm     GO_ARCH=armv6l  GOARM=6 GOARCH=arm    GOOS=linux 
 
 before_install:
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
