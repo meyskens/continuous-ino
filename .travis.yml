@@ -20,6 +20,7 @@ before_script:
     - sudo apt-get -y install qemu-user-static
     - docker run --rm --privileged multiarch/qemu-user-static:register
 script:
+    - echo $GOARCH
     - go get
     - go test ./...
     - go build ./
