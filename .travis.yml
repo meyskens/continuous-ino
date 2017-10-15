@@ -20,7 +20,7 @@ before_script:
     - sudo apt-get -y install qemu-user-static
     - docker run --rm --privileged multiarch/qemu-user-static:register
 script:
-    - cd src && go get && go build ./ && mv ./src ../cino && cd ../
+    - go get && go build ./
     - sudo ./build.sh --arch="$ARCH" --qemuarch="$QEMU_ARCH" --qemuversion="$QEMU_VER" --repo="$DOCKER_REPO" --goarch="$GO_ARCH"
 after_success:
     - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"

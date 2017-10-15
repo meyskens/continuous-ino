@@ -14,6 +14,6 @@ RUN apt-get update &&\
 
 RUN pip install ino
 
-COPY ./cino /usr/local/cino
+COPY ./continuous-ino /usr/local/continuous-ino
 
-CMD /usr/local/cino
+CMD /usr/local/continuous-ino
