@@ -24,7 +24,7 @@ func serveWebhook(c echo.Context) error {
 	info := github.WebHookPayload{}
 	json.Unmarshal(payload, &info)
 
-	handleHookPayload(info)
+	handleHookPayload(github.WebHookType(c.Request()), info)
 
 	return c.String(http.StatusOK, "OK")
 }
