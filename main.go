@@ -18,5 +18,6 @@ func main() {
 
 	e := echo.New()
 	e.GET("/", serveRoot)
+	e.POST("/webhook", serveWebhook)
 	e.Logger.Fatal(e.Start(":80"))
 }

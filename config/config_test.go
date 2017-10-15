@@ -24,6 +24,13 @@ func Test_readEnv(t *testing.T) {
 			envVal:  "abc123",
 			want:    &Configuration{GitHub: GitHubConfig{AuthToken: "abc123"}},
 		},
+		{
+			name:    "test github token",
+			args:    args{conf: &Configuration{}},
+			envName: "CINO_GITHUB_WEBHOOK_SECRET",
+			envVal:  "secreeet",
+			want:    &Configuration{GitHub: GitHubConfig{WebhookSecret: "secreeet"}},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

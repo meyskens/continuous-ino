@@ -17,3 +17,7 @@ func setUpGitHub() {
 
 	gitHubClient = github.NewClient(tc)
 }
+
+func handleHookPayload(payload github.WebHookPayload) {
+
+}

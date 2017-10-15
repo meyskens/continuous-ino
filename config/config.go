@@ -6,7 +6,8 @@ import (
 
 // GitHubConfig contains the config specific to GitHub
 type GitHubConfig struct {
-	AuthToken string
+	AuthToken     string
+	WebhookSecret string
 }
 
 // Configuration contains the config for the CI
@@ -25,5 +26,8 @@ func GetConfiguration() Configuration {
 func readEnv(conf *Configuration) {
 	if authtoken := os.Getenv("CINO_GITHUB_AUTHTOKEN"); authtoken != "" {
 		conf.GitHub.AuthToken = authtoken
+	}
+	if secret := os.Getenv("CINO_GITHUB_WEBHOOK_SECRET"); secret != "" {
+		conf.GitHub.WebhookSecret = secret
 	}
 }
