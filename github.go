@@ -11,7 +11,7 @@ var gitHubClient *github.Client
 
 func setUpGitHub() {
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: "... your access token ..."},
+		&oauth2.Token{AccessToken: cfg.GitHub.AuthToken},
 	)
 	tc := oauth2.NewClient(context.Background(), ts)
 
