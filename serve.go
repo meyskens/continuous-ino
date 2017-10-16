@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/google/go-github/github"
@@ -18,6 +19,7 @@ func serveWebhook(c echo.Context) error {
 	}
 	payload, err := github.ValidatePayload(c.Request(), []byte(cfg.GitHub.WebhookSecret))
 	if err != nil {
+		fmt.Println(err)
 		return c.String(http.StatusUnauthorized, "Invalid secret")
 	}
 
