@@ -20,7 +20,6 @@ func serveWebhook(c echo.Context) error {
 	payload, err := github.ValidatePayload(c.Request(), []byte(cfg.GitHub.WebhookSecret))
 	if err != nil {
 		fmt.Println(err)
-		fmt.Println(cfg.GitHub.WebhookSecret)
 		return c.String(http.StatusUnauthorized, "Invalid secret")
 	}
 
