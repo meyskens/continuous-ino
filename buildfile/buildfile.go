@@ -2,8 +2,10 @@ package buildfile
 
 import yaml "gopkg.in/yaml.v2"
 
+// TestContent is the content of a single test
 type TestContent struct {
 	Name string `yaml:"name"`
+	File string `yaml:"file"`
 }
 
 // BuildFile is the struct with the content of .cino.ym;

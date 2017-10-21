@@ -1,3 +1,4 @@
 main: test.ino
 tests: 
   - name: test1
+    file: main.ino

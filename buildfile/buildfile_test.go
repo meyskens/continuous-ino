@@ -26,7 +26,10 @@ func TestParse(t *testing.T) {
 			want: BuildFile{
 				Main: "test.ino",
 				Tests: []TestContent{
-					{Name: "test1"},
+					{
+						Name: "test1",
+						File: "main.ino",
+					},
 				},
 			},
 		},
