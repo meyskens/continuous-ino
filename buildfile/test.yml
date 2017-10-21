@@ -1,0 +1,3 @@
+main: test.ino
+tests: 
+  - name: test1
