@@ -3,12 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
 )
 
 var gitHubClient *github.Client
+var buildMutex = sync.Mutex{}
 
 var statusPending = "pending"
 var statusSuccess = "success"
@@ -37,6 +39,8 @@ func handleHookPayload(event string, payload github.WebHookPayload) {
 func handlePush(payload github.WebHookPayload) {
 	setPending(payload)
 
+	buildMutex.Lock()
+
 	path, err := clone(payload.Repo.GetCloneURL(), payload.GetAfter())
 	if err != nil {
 		fmt.Println(err)
@@ -49,6 +53,8 @@ func handlePush(payload github.WebHookPayload) {
 		setFailed(payload, err.Error())
 		return
 	}
+
+	buildMutex.Unlock()
 
 	setSuccess(payload)
 }
