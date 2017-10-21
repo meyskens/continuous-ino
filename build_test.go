@@ -1,11 +1,12 @@
 package main
 
 import (
+	"reflect"
 	"testing"
 
-	"gopkg.in/src-d/go-billy.v3/memfs"
-
+	"github.com/meyskens/continuous-ino/buildfile"
 	"gopkg.in/src-d/go-billy.v3"
+	"gopkg.in/src-d/go-billy.v3/memfs"
 )
 
 func Test_clone(t *testing.T) {
@@ -54,7 +55,7 @@ func Test_clone(t *testing.T) {
 	}
 }
 
-func Test_checkBuildFile(t *testing.T) {
+func Test_readBuildFile(t *testing.T) {
 	fs1 := memfs.New()
 	fs2 := memfs.New()
 	fs1.Create(".cino.yml")
@@ -65,6 +66,7 @@ func Test_checkBuildFile(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
+		wantOut buildfile.BuildFile
 		wantErr bool
 	}{
 		{
@@ -84,8 +86,13 @@ func Test_checkBuildFile(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := checkBuildFile(tt.args.fs); (err != nil) != tt.wantErr {
-				t.Errorf("checkBuildFile() error = %v, wantErr %v", err, tt.wantErr)
+			gotOut, err := readBuildFile(tt.args.fs)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("readBuildFile() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(gotOut, tt.wantOut) {
+				t.Errorf("readBuildFile() = %v, want %v", gotOut, tt.wantOut)
 			}
 		})
 	}

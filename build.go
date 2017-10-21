@@ -1,10 +1,12 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/meyskens/continuous-ino/buildfile"
 
 	"gopkg.in/src-d/go-billy.v3"
 
@@ -42,11 +44,14 @@ func clone(repo, hash string) (billy.Filesystem, error) {
 	return w.Filesystem, nil
 }
 
-func checkBuildFile(fs billy.Filesystem) error {
-	_, err := fs.Open(".cino.yml")
+func readBuildFile(fs billy.Filesystem) (out buildfile.BuildFile, err error) {
+	file, err := fs.Open(".cino.yml")
 	if err != nil {
-		return errors.New(".cino.yml not present")
+		return
 	}
 
-	return nil
+	b, _ := ioutil.ReadAll(file)
+	out, err = buildfile.Parse(b)
+
+	return
 }

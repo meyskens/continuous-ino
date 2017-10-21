@@ -48,7 +48,7 @@ func handlePush(payload github.WebHookPayload) {
 		return
 	}
 
-	err = checkBuildFile(fs)
+	_, err = readBuildFile(fs)
 	if err != nil {
 		setFailed(payload, err.Error())
 		return
