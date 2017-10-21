@@ -31,6 +31,13 @@ func Test_readEnv(t *testing.T) {
 			envVal:  "secreeet",
 			want:    &Configuration{GitHub: GitHubConfig{WebhookSecret: "secreeet"}},
 		},
+		{
+			name:    "test arduino model",
+			args:    args{conf: &Configuration{}},
+			envName: "CINO_ARDUINO_MODEL",
+			envVal:  "uno",
+			want:    &Configuration{Arduino: ArduinoConfig{Model: "uno"}},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
