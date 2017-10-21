@@ -37,11 +37,9 @@ func handleHookPayload(event string, payload github.WebHookPayload) {
 
 func handlePush(payload github.WebHookPayload) {
 	// Set pending
-	_, _, err := gitHubClient.Repositories.CreateStatus(context.Background(), payload.Repo.Owner.GetLogin(), payload.Repo.GetName(), payload.GetAfter(), &github.RepoStatus{State: &statusPending})
-	fmt.Println(err)
+	gitHubClient.Repositories.CreateStatus(context.Background(), payload.Repo.Owner.GetLogin(), payload.Repo.GetName(), payload.GetAfter(), &github.RepoStatus{State: &statusPending})
 
 	// dummy it for now
 	time.Sleep(10 * time.Second)
-	_, _, err = gitHubClient.Repositories.CreateStatus(context.Background(), payload.Repo.Owner.GetLogin(), payload.Repo.GetName(), payload.GetAfter(), &github.RepoStatus{State: &statusSuccess})
-	fmt.Println(err)
+	gitHubClient.Repositories.CreateStatus(context.Background(), payload.Repo.Owner.GetLogin(), payload.Repo.GetName(), payload.GetAfter(), &github.RepoStatus{State: &statusSuccess})
 }
