@@ -1,4 +1,4 @@
-Continuous Ino - CI server for Arduino 
+Continuous Ino - CI server for Arduino  [![Build Status](https://travis-ci.org/meyskens/continuous-ino.svg?branch=master)](https://travis-ci.org/meyskens/continuous-ino)
 ======================================
 
 Continuous Ino is a CI software designed to run unit tests in Arduino based hardware using frameworks like [arduinounit](https://github.com/mmurdoch/arduinounit).  
