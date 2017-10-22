@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -35,7 +34,14 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
-	fmt.Println(err)
+
+	if err == nil {
+		// No errors! we can run!
+		cmd := exec.Command("/bin/bash", "-c", "cd "+path+" && ino upload -m "+cfg.Arduino.Model)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Run()
+	}
 
 	// Remove test file
 	os.Remove(path + buildFile.Main)
