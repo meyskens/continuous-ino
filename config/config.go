@@ -15,10 +15,16 @@ type ArduinoConfig struct {
 	Model string
 }
 
+// DatabaseConfig is the configuration used for BoltDB
+type DatabaseConfig struct {
+	Path string
+}
+
 // Configuration contains the config for the CI
 type Configuration struct {
-	GitHub  GitHubConfig
-	Arduino ArduinoConfig
+	GitHub   GitHubConfig
+	Arduino  ArduinoConfig
+	Database DatabaseConfig
 }
 
 // GetConfiguration reads the configuration from config.json and returns it
@@ -26,6 +32,9 @@ func GetConfiguration() Configuration {
 	returnConfig := Configuration{
 		Arduino: ArduinoConfig{
 			Model: "nano", // set default model
+		},
+		Database: DatabaseConfig{
+			Path: "/var/lib/cino/cino.db",
 		},
 	}
 
@@ -42,5 +51,8 @@ func readEnv(conf *Configuration) {
 	}
 	if model := os.Getenv("CINO_ARDUINO_MODEL"); model != "" {
 		conf.Arduino.Model = model
+	}
+	if path := os.Getenv("CINO_DATABASE_PATH"); path != "" {
+		conf.Database.Path = path
 	}
 }

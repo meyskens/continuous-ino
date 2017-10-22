@@ -38,6 +38,13 @@ func Test_readEnv(t *testing.T) {
 			envVal:  "uno",
 			want:    &Configuration{Arduino: ArduinoConfig{Model: "uno"}},
 		},
+		{
+			name:    "test database path",
+			args:    args{conf: &Configuration{}},
+			envName: "CINO_DATABASE_PATH",
+			envVal:  "/tmp/db",
+			want:    &Configuration{Database: DatabaseConfig{Path: "/tmp/db"}},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
