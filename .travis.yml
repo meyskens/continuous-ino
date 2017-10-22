@@ -16,7 +16,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get -y install docker-ce
   - sudo apt-get install -y python python-dev python-pip python-setuptools python-wheel picocom arduino --no-install-recommends
-  - pip install ino
+  - sudo pip install ino
 
 before_script:
     - sudo apt-get -y install qemu-user-static
