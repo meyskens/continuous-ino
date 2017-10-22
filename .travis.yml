@@ -15,7 +15,7 @@ before_install:
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
   - sudo apt-get -y install docker-ce
-  - sudp apt-get install -y python python-dev python-pip python-setuptools python-wheel picocom arduino --no-install-recommends
+  - sudo apt-get install -y python python-dev python-pip python-setuptools python-wheel picocom arduino --no-install-recommends
   - pip install ino
 
 before_script:
