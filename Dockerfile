@@ -10,6 +10,7 @@ RUN apt-get update &&\
     python-wheel \
     picocom \
     arduino \
+    build-essential \
     --no-install-recommends
 
 RUN pip install ino
