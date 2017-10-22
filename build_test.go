@@ -46,7 +46,7 @@ func Test_clone(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_, err := clone(tt.args.repo, tt.args.hash)
+			_, _, err := clone(tt.args.repo, tt.args.hash)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("clone() error = %v, wantErr %v", err, tt.wantErr)
 				return

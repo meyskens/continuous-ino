@@ -41,21 +41,27 @@ func handlePush(payload github.WebHookPayload) {
 
 	buildMutex.Lock()
 
-	fs, err := clone(payload.Repo.GetCloneURL(), payload.GetAfter())
+	fs, path, err := clone(payload.Repo.GetCloneURL(), payload.GetAfter())
 	if err != nil {
 		fmt.Println(err)
 		setFailed(payload, "Could not clone repository")
 		return
 	}
 
-	_, err = readBuildFile(fs)
+	bfile, err := readBuildFile(fs)
 	if err != nil {
 		setFailed(payload, err.Error())
 		return
 	}
 
-	buildMutex.Unlock()
+	ok, _ := runTests(path, bfile)
+	if !ok {
+		buildMutex.Unlock()
+		setFailed(payload, "Some tests did not pass")
+		return
+	}
 
+	buildMutex.Unlock()
 	setSuccess(payload)
 }
 
