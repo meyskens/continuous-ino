@@ -2,10 +2,14 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
+	"strconv"
 	"time"
+
+	"github.com/meyskens/continuous-ino/serialhandler"
 
 	"github.com/meyskens/continuous-ino/buildfile"
 )
@@ -61,11 +65,13 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 		// No errors! we can run!
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		defer cancel()
+		handler := serialhandler.New(cancel)
 
-		cmd = execCommandContext(ctx, "/bin/bash", "-c", "cd "+path+" && ino upload -m "+cfg.Arduino.Model)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+		cmd = execCommandContext(ctx, "/bin/bash", "-c", "cd "+path+" && ino serial -b "+strconv.Itoa(buildFile.Baud))
+		cmd.Stdout = &handler
+		cmd.Stderr = &handler
 		err = cmd.Run()
+		fmt.Println(handler.Output())
 	}
 
 	// Remove test file
