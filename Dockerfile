@@ -30,7 +30,7 @@ RUN case "${ARCH}" in                                                           
       ;;                                                                                              \
 esac && tar -xJf arduino.tar.xz && rm -f arduino.tar.xz
 
-RUN mv arduino-${version} /usr/local/share/arduino/ && /usr/local/share/arduino/install.sh
+RUN mv arduino-${arduinoversion} /usr/local/share/arduino/ && /usr/local/share/arduino/install.sh
 
 RUN pip install ino
 
