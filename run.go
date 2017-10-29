@@ -79,9 +79,8 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 			defer port.Close()
 			go pipe(port, &handler)
 
-			fmt.Println(handler.Output())
-
 			<-ctx.Done()
+			fmt.Println(handler.Output())
 		}
 	}
 
