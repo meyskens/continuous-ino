@@ -24,7 +24,6 @@ before_script:
     - docker run --rm --privileged multiarch/qemu-user-static:register
 script:
     - glide install
-    - go get
     - go test ./...
     - GOARCH=$GO_ARCH GOARM=$GO_ARM go build ./
     - sudo ./build.sh --arch="$ARCH" --qemuarch="$QEMU_ARCH" --qemuversion="$QEMU_VER" --repo="$DOCKER_REPO"
