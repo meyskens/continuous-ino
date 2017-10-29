@@ -11,12 +11,20 @@ type TestContent struct {
 // BuildFile is the struct with the content of .cino.ym;
 type BuildFile struct {
 	Main  string        `yaml:"main"`
+	Baud  int           `yaml:"baud"`
 	Tests []TestContent `yaml:"tests"`
+}
+
+// New returns an empty BuildFile with the defaults set
+func New() BuildFile {
+	return BuildFile{
+		Baud: 9600,
+	}
 }
 
 // Parse parses a yml file to a BuildFile
 func Parse(content []byte) (BuildFile, error) {
-	out := BuildFile{}
+	out := New()
 	err := yaml.Unmarshal(content, &out)
 
 	return out, err
