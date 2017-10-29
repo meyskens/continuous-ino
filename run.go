@@ -6,9 +6,9 @@ import (
 	"io"
 	"os"
 	"os/exec"
-	"strconv"
 	"time"
 
+	"github.com/jacobsa/go-serial/serial"
 	"github.com/meyskens/continuous-ino/serialhandler"
 
 	"github.com/meyskens/continuous-ino/buildfile"
@@ -67,11 +67,22 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 		defer cancel()
 		handler := serialhandler.New(cancel)
 
-		cmd = execCommandContext(ctx, "/bin/bash", "-c", "cd "+path+" && ino serial -b "+strconv.Itoa(buildFile.Baud))
-		cmd.Stdout = &handler
-		cmd.Stderr = &handler
-		err = cmd.Run()
-		fmt.Println(handler.Output())
+		port, err := serial.Open(serial.OpenOptions{
+			PortName:        "/dev/ttyUSB0",
+			BaudRate:        uint(buildFile.Baud),
+			DataBits:        8,
+			StopBits:        1,
+			MinimumReadSize: 4,
+		})
+
+		if err == nil {
+			defer port.Close()
+			go pipe(port, &handler)
+
+			fmt.Println(handler.Output())
+
+			<-ctx.Done()
+		}
 	}
 
 	// Remove test file
@@ -90,4 +101,14 @@ func copyFile(src, dst string) {
 	defer to.Close()
 
 	io.Copy(to, from)
+}
+
+func pipe(r io.Reader, w io.Writer) {
+	var err error
+	var n int
+	for err == nil {
+		p := make([]byte, 1)
+		n, err = r.Read(p)
+		w.Write(p[0:n])
+	}
 }

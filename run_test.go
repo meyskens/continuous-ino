@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"io"
 	"os"
 	"os/exec"
 	"testing"
 
 	"github.com/meyskens/continuous-ino/buildfile"
 	"github.com/meyskens/continuous-ino/config"
+	"github.com/stretchr/testify/assert"
 )
 
 const TestPath = "/tmp/cino-test/"
@@ -117,4 +119,19 @@ func Test_buildAndTestIno(t *testing.T) {
 	}
 
 	os.RemoveAll(TestPath)
+}
+
+func Test_Pipe(t *testing.T) {
+	r, w := io.Pipe()
+
+	go pipe(r, w)
+
+	go w.Write([]byte("test123456"))
+
+	out := make([]byte, 10)
+	r.Read(out)
+	r.Close()
+
+	assert.Equal(t, []byte("test123456"), out)
+
 }
