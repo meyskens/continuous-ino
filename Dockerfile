@@ -6,8 +6,7 @@ RUN apt-get update &&\
     apt-get install -y \
     build-essential \
     wget \
-    git \
-    --no-install-recommends
+    git 
 
 RUN apt-get update && apt-get install -y xz-utils
 
