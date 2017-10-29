@@ -17,13 +17,13 @@ before_install:
   - sudo apt-get -y install docker-ce
   - sudo apt-get install -y python python-dev python-pip python-setuptools python-wheel picocom arduino --no-install-recommends
   - sudo pip install ino
+  - go get -v github.com/Masterminds/glide
 
 before_script:
     - sudo apt-get -y install qemu-user-static
     - docker run --rm --privileged multiarch/qemu-user-static:register
 script:
-    - echo $GO_ARCH
-    - go get
+    - glide install
     - go test ./...
     - GOARCH=$GO_ARCH GOARM=$GO_ARM go build ./
     - sudo ./build.sh --arch="$ARCH" --qemuarch="$QEMU_ARCH" --qemuversion="$QEMU_VER" --repo="$DOCKER_REPO"
