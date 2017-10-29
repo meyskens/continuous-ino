@@ -15,8 +15,6 @@ before_install:
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
   - sudo apt-get -y install docker-ce
-  - sudo apt-get install -y python python-dev python-pip python-setuptools python-wheel picocom arduino --no-install-recommends
-  - sudo pip install ino
   - go get -v github.com/Masterminds/glide
 
 before_script:

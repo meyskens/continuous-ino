@@ -4,12 +4,6 @@ ENV arduinoversion=1.8.5
 
 RUN apt-get update &&\
     apt-get install -y \
-    python \
-    python-dev \
-    python-pip \
-    python-setuptools \
-    python-wheel \
-    picocom \
     build-essential \
     wget \
     git \
@@ -31,15 +25,7 @@ RUN case "${ARCH}" in                                                           
       ;;                                                                                              \
 esac && tar -xJf arduino.tar.xz && rm -f arduino.tar.xz
 
-RUN mv arduino-${arduinoversion} /usr/local/share/arduino/ && /usr/local/share/arduino/install.sh
-
-#RUN pip install ino
-
-RUN cd /tmp && \
-  git clone git://github.com/amperka/ino.git && \
-  cd ino && \
-  cat requirements.txt | xargs pip install &&\
-  make install && rm -fr /tmp/ino
+RUN mv arduino-${arduinoversion} /usr/local/share/arduino/ && /usr/local/share/arduino/install.sh && ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino 
 
 COPY ./continuous-ino /usr/local/bin/continuous-ino
 

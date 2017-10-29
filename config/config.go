@@ -31,7 +31,7 @@ type Configuration struct {
 func GetConfiguration() Configuration {
 	returnConfig := Configuration{
 		Arduino: ArduinoConfig{
-			Model: "nano328", // set default model
+			Model: "arduino:avr:nano:cpu=atmega328P", // set default model
 		},
 		Database: DatabaseConfig{
 			Path: "/var/lib/cino/cino.db",

@@ -46,19 +46,15 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 		timeout = time.Minute * 10
 	}
 	path = path + "/"
-	// Backup main.ino
-	os.Rename(path+buildFile.Main, path+buildFile.Main+".bak")
-	// Copy over test file
-	copyFile(path+test.File, path+buildFile.Main)
 
-	cmd := execCommand("/bin/bash", "-c", "cd "+path+" && ino build -m "+cfg.Arduino.Model)
+	cmd := execCommand("/bin/bash", "-c", "cd "+path+" && arduino --verify --pref sketchbook.path=$(pwd) --board "+cfg.Arduino.Model+" "+test.File)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 
 	if err == nil {
 		// No errors! we can upload!
-		cmd = execCommand("/bin/bash", "-c", "cd "+path+" && ino upload -m "+cfg.Arduino.Model)
+		cmd = execCommand("/bin/bash", "-c", "cd "+path+" && arduino --upload --pref sketchbook.path=$(pwd) --board "+cfg.Arduino.Model+" "+test.File)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err = cmd.Run()
@@ -98,11 +94,6 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 		currentRun.Output = append(currentRun.Output, runOutput)
 		store.SaveRun(currentRun)
 	}
-
-	// Remove test file
-	os.Remove(path + buildFile.Main)
-	// Restore main.ino
-	os.Rename(path+buildFile.Main+".bak", path+buildFile.Main)
 	return
 }
 
