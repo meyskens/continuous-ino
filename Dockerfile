@@ -17,7 +17,7 @@ RUN apt-get update &&\
 RUN apt-get update && apt-get install -y xz-utils
 
 
-# Install Docker
+# Install Arduino
 RUN case "${ARCH}" in                                                                                 \
     amd64|x86_64)                                                                                     \
       wget -O arduino.tar.xz https://downloads.arduino.cc/arduino-${arduinoversion}-linux64.tar.xz    \
