@@ -12,6 +12,7 @@ RUN apt-get update &&\
     picocom \
     build-essential \
     wget \
+    git \
     --no-install-recommends
 
 RUN apt-get update && apt-get install -y xz-utils
@@ -32,7 +33,13 @@ esac && tar -xJf arduino.tar.xz && rm -f arduino.tar.xz
 
 RUN mv arduino-${arduinoversion} /usr/local/share/arduino/ && /usr/local/share/arduino/install.sh
 
-RUN pip install ino
+#RUN pip install ino
+
+RUN cd /tmp && \
+  git clone git://github.com/amperka/ino.git && \
+  cd ino && \
+  cat requirements.txt | xargs pip install &&\
+  make install && rm -fr /tmp/ino
 
 COPY ./continuous-ino /usr/local/bin/continuous-ino
 
