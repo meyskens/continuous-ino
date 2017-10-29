@@ -75,6 +75,7 @@ func Test_readBuildFile(t *testing.T) {
 				fs: fs1,
 			},
 			wantErr: false,
+			wantOut: buildfile.New(),
 		},
 		{
 			name: "test negative",
