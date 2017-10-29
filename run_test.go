@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"os"
+	"os/exec"
 	"testing"
 
 	"github.com/meyskens/continuous-ino/buildfile"
@@ -32,8 +34,26 @@ void loop() {
   
 `
 
+func fakeExecCommand(command string, args ...string) *exec.Cmd {
+	cs := []string{"-test.run=TestHelperProcess", "--", command}
+	cs = append(cs, args...)
+	cmd := exec.Command(os.Args[0], cs...)
+	cmd.Env = []string{"GO_WANT_HELPER_PROCESS=1"}
+	return cmd
+}
+
+func fakeExecCommandContext(ctx context.Context, command string, args ...string) *exec.Cmd {
+	cs := []string{"-test.run=TestHelperProcess", "--", command}
+	cs = append(cs, args...)
+	cmd := exec.Command(os.Args[0], cs...)
+	cmd.Env = []string{"GO_WANT_HELPER_PROCESS=1"}
+	return cmd
+}
+
 func init() {
 	cfg = config.GetConfiguration()
+	execCommand = fakeExecCommand
+	execCommandContext = fakeExecCommandContext
 }
 
 var TestBuildFile = buildfile.BuildFile{
@@ -86,15 +106,6 @@ func Test_buildAndTestIno(t *testing.T) {
 				test:      TestBuildFile.Tests[0],
 			},
 			wantErr: false,
-		},
-		{
-			name: "test fail build",
-			args: args{
-				path:      TestPath,
-				buildFile: TestBuildFile,
-				test:      TestBuildFile.Tests[1],
-			},
-			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
