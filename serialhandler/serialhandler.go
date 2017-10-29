@@ -6,6 +6,7 @@ import "context"
 type HandlerInterface interface {
 	Write()
 	Output() string
+	Errors() []string
 }
 
 // SerialHandler handles serial output from the Arduino to generate results
@@ -38,4 +39,9 @@ func (s *SerialHandler) Write(p []byte) (n int, err error) {
 // Output gives a string of the current sent output
 func (s *SerialHandler) Output() string {
 	return s.output
+}
+
+// Errors gives back the errors found
+func (s *SerialHandler) Errors() []string {
+	return s.errors
 }

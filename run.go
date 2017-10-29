@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/jacobsa/go-serial/serial"
@@ -81,6 +83,9 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 
 			<-ctx.Done()
 			fmt.Println(handler.Output())
+			if len(handler.Errors()) != 0 {
+				err = errors.New(strings.Join(handler.Errors(), "\n"))
+			}
 		}
 	}
 
