@@ -7,8 +7,10 @@ import (
 	"os/exec"
 	"testing"
 
+	"github.com/boltdb/bolt"
 	"github.com/meyskens/continuous-ino/buildfile"
 	"github.com/meyskens/continuous-ino/config"
+	"github.com/meyskens/continuous-ino/storage"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -56,6 +58,12 @@ func init() {
 	cfg = config.GetConfiguration()
 	execCommand = fakeExecCommand
 	execCommandContext = fakeExecCommandContext
+
+	db, _ := bolt.Open("my.db", 0600, nil)
+	defer db.Close()
+	defer os.Remove("my.db")
+	store = storage.New(db)
+	currentRun = storage.Run{}
 }
 
 var TestBuildFile = buildfile.BuildFile{

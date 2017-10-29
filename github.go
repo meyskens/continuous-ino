@@ -4,13 +4,17 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/google/go-github/github"
+	"github.com/meyskens/continuous-ino/storage"
 	"golang.org/x/oauth2"
 )
 
 var gitHubClient *github.Client
 var buildMutex = sync.Mutex{}
+
+var currentRun storage.Run // we only run one at the time for now!
 
 var statusPending = "pending"
 var statusSuccess = "success"
@@ -37,6 +41,12 @@ func handleHookPayload(event string, payload github.WebHookPayload) {
 }
 
 func handlePush(payload github.WebHookPayload) {
+	currentRun = store.NewRun()
+	currentRun.Repo = payload.Repo.GetFullName()
+	currentRun.Time = time.Now()
+	currentRun.Output = []storage.RunOutput{}
+	store.SaveRun(currentRun)
+
 	setPending(payload)
 
 	buildMutex.Lock()

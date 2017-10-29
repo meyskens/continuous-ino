@@ -16,6 +16,7 @@ type Run struct {
 
 // RunOutput is the output of a specific run of a test
 type RunOutput struct {
+	Name   string
 	File   string
 	Step   string
 	Output string

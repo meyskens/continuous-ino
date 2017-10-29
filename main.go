@@ -7,10 +7,12 @@ import (
 	"github.com/boltdb/bolt"
 	"github.com/labstack/echo"
 	"github.com/meyskens/continuous-ino/config"
+	"github.com/meyskens/continuous-ino/storage"
 )
 
 var cfg config.Configuration
 var db *bolt.DB
+var store storage.Storage
 
 func main() {
 	fmt.Println("Contininuous Ino -- CI for Arduino")
@@ -24,6 +26,7 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+	store = storage.New(db)
 
 	e := echo.New()
 	e.GET("/", serveRoot)

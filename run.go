@@ -12,6 +12,7 @@ import (
 
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/meyskens/continuous-ino/serialhandler"
+	"github.com/meyskens/continuous-ino/storage"
 
 	"github.com/meyskens/continuous-ino/buildfile"
 )
@@ -65,6 +66,11 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 
 	if err == nil {
 		// No errors! we can run!
+		runOutput := storage.RunOutput{}
+		runOutput.File = test.File
+		runOutput.Name = test.Name
+		runOutput.Step = "Run on Arduino"
+
 		ctx, cancel := context.WithTimeout(context.Background(), timeout)
 		defer cancel()
 		handler := serialhandler.New(cancel)
@@ -83,17 +89,20 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 
 			<-ctx.Done()
 			fmt.Println(handler.Output())
+			runOutput.Output += handler.Output()
 			if len(handler.Errors()) != 0 {
 				err = errors.New(strings.Join(handler.Errors(), "\n"))
 			}
 		}
+
+		currentRun.Output = append(currentRun.Output, runOutput)
+		store.SaveRun(currentRun)
 	}
 
 	// Remove test file
 	os.Remove(path + buildFile.Main)
 	// Restore main.ino
 	os.Rename(path+buildFile.Main+".bak", path+buildFile.Main)
-
 	return
 }
 
