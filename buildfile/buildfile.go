@@ -4,8 +4,9 @@ import yaml "gopkg.in/yaml.v2"
 
 // TestContent is the content of a single test
 type TestContent struct {
-	Name string `yaml:"name"`
-	File string `yaml:"file"`
+	Name    string `yaml:"name"`
+	File    string `yaml:"file"`
+	Timeout string `yaml:"timeout"`
 }
 
 // BuildFile is the struct with the content of .cino.ym;
