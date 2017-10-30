@@ -21,8 +21,10 @@ func clone(repo, hash string) (fs billy.Filesystem, path string, err error) {
 
 	os.RemoveAll(path)
 	r, err := git.PlainClone(path, false, &git.CloneOptions{
-		URL:      repo,
-		Progress: os.Stdout,
+		URL:               repo,
+		Progress:          os.Stdout,
+		Depth:             1,
+		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
 	})
 	if err != nil {
 		fmt.Println("clone error", err)
