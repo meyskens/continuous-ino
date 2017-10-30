@@ -9,10 +9,6 @@ import (
 	"github.com/labstack/echo"
 )
 
-func serveRoot(c echo.Context) error {
-	return c.String(http.StatusOK, "Continuous Ino Server")
-}
-
 func serveWebhook(c echo.Context) error {
 	if c.Request().Header.Get("Content-Type") != "application/json" {
 		return c.String(http.StatusBadRequest, "I only support the JSON format")

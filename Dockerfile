@@ -26,6 +26,9 @@ esac && tar -xJf arduino.tar.xz && rm -f arduino.tar.xz
 
 RUN mv arduino-${arduinoversion} /usr/local/share/arduino/ && /usr/local/share/arduino/install.sh && ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino 
 
-COPY ./continuous-ino /usr/local/bin/continuous-ino
+COPY ./continuous-ino /opt/cino/continuous-ino
+COPY ./frontend/build /opt/cino/static
 
-CMD /usr/local/bin/continuous-ino
+WORKDIR /opt/cino/
+
+CMD /opt/cino/continuous-ino

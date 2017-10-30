@@ -29,7 +29,7 @@ func main() {
 	store = storage.New(db)
 
 	e := echo.New()
-	e.GET("/", serveRoot)
 	e.POST("/webhook", serveWebhook)
+	e.Static("/", "static")
 	e.Logger.Fatal(e.Start(":80"))
 }
