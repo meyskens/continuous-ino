@@ -9,11 +9,11 @@ for i in "$@"
             BOARD="${i#*=}"
         ;;
         *)
-        PATH="${i#*=}"
+        BUILDPATH="${i#*=}"
         # unknown option
         ;;
     esac
 done
 
-arduino --verify --pref sketchbook.path=$(pwd) --board $BOARD $PATH
-arduino --upload --pref sketchbook.path=$(pwd) --board $BOARD $PATH
+arduino --verify --pref sketchbook.path=$(pwd) --board $BOARD $BUILDPATH
+arduino --upload --pref sketchbook.path=$(pwd) --board $BOARD $BUILDPATH
