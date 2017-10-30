@@ -5,6 +5,9 @@ import "strings"
 
 var arduinoUnitErrorWords = []string{
 	"Failed",
+	"Assertion failed",
+	"error",
+	"Error",
 }
 
 // HandlerInterface is the interface for a SerialHandler
