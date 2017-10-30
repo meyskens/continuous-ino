@@ -89,6 +89,8 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 
 			if len(handler.Errors()) != 0 {
 				err = errors.New(strings.Join(handler.Errors(), "\n"))
+				fmt.Println("Found errors")
+				fmt.Println(err)
 			}
 		}
 
