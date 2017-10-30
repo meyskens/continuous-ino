@@ -32,7 +32,7 @@ type Configuration struct {
 func GetConfiguration() Configuration {
 	returnConfig := Configuration{
 		Arduino: ArduinoConfig{
-			Model: "arduino:avr:nano:cpu=atmega328P", // set default model
+			Model: "arduino:avr:nano:cpu=atmega328", // set default model
 			Port:  "/dev/ttyUSB0",
 		},
 		Database: DatabaseConfig{
