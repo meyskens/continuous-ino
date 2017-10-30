@@ -69,3 +69,23 @@ func TestContextCancel(t *testing.T) {
 	done := ctx.Done()
 	<-done
 }
+
+func TestErrors(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	handler := New(cancel)
+
+	handler.Write([]byte("TEST OK\n"))
+	handler.Write([]byte("Assertion passed: (x=1) == (1=1), file test2.ino, line 6.\n"))
+	handler.Write([]byte("Test correct passed.\n"))
+	handler.Write([]byte("Assertion failed: (x=1) != (1=1), file test2.ino, line 11.\n"))
+	handler.Write([]byte("Test incorrect failed.\n"))
+	handler.Write([]byte("Test summary: 1 passed, 1 failed, and 0 skipped, out of 2 test(s).\n"))
+
+	handler.Write([]byte{0x07})
+
+	done := ctx.Done()
+	<-done
+
+	assert.Equal(t, 1, len(handler.Errors()))
+}
