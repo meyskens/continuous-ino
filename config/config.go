@@ -13,6 +13,7 @@ type GitHubConfig struct {
 // ArduinoConfig is the configuration for used in uploading the Arduino code
 type ArduinoConfig struct {
 	Model string
+	Port  string
 }
 
 // DatabaseConfig is the configuration used for BoltDB
@@ -32,6 +33,7 @@ func GetConfiguration() Configuration {
 	returnConfig := Configuration{
 		Arduino: ArduinoConfig{
 			Model: "arduino:avr:nano:cpu=atmega328P", // set default model
+			Port:  "/dev/ttyUSB0",
 		},
 		Database: DatabaseConfig{
 			Path: "/var/lib/cino/cino.db",

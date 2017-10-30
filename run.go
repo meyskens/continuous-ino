@@ -54,7 +54,7 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 
 	if err == nil {
 		// No errors! we can upload!
-		cmd = execCommand("/bin/bash", "-c", "cd "+path+" && arduino --upload --pref sketchbook.path=$(pwd) --board "+cfg.Arduino.Model+" "+test.File)
+		cmd = execCommand("/bin/bash", "-c", "cd "+path+" && arduino --upload --pref sketchbook.path=$(pwd) --board "+cfg.Arduino.Model+" --port "+cfg.Arduino.Port+" "+test.File)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err = cmd.Run()
@@ -72,7 +72,7 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 		handler := serialhandler.New(cancel)
 
 		port, err := serial.Open(serial.OpenOptions{
-			PortName:        "/dev/ttyUSB0",
+			PortName:        cfg.Arduino.Port,
 			BaudRate:        uint(buildFile.Baud),
 			DataBits:        8,
 			StopBits:        1,
