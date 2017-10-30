@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BOARD="arduino:avr:nano:cpu=atmega328P"
+BOARD="arduino:avr:nano:cpu=atmega328"
 
 for i in "$@"
     do
