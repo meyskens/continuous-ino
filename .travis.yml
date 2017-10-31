@@ -26,7 +26,7 @@ script:
     - glide install
     - go test ./...
     - GOARCH=$GO_ARCH GOARM=$GO_ARM go build ./
-    - cd frontend && npm instal && yarn && npm run-script build
+    - cd frontend && npm install && yarn && npm run-script build && cd ..
     - sudo ./build.sh --arch="$ARCH" --qemuarch="$QEMU_ARCH" --qemuversion="$QEMU_VER" --repo="$DOCKER_REPO"
 after_success:
     - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
