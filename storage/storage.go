@@ -38,3 +38,15 @@ func (s *Storage) SaveRun(run Run) error {
 func (s *Storage) GetRun(id uint64) (Run, error) {
 	return DecodeRun(s.getData("RUN", id))
 }
+
+// GetAllRuns gets all runs done by the system
+func (s *Storage) GetAllRuns() ([]Run, error) {
+	bytes := s.getAll("RUN")
+	out := []Run{}
+
+	for _, b := range bytes {
+		run, _ := DecodeRun(b)
+		out = append(out, run)
+	}
+	return out, nil
+}
