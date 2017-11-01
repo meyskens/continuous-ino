@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/google/go-github/github"
 	"github.com/labstack/echo"
@@ -25,4 +26,17 @@ func serveWebhook(c echo.Context) error {
 	handleHookPayload(github.WebHookType(c.Request()), info)
 
 	return c.String(http.StatusOK, "OK")
+}
+
+func serveGetBuild(c echo.Context) error {
+	ID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadGateway, map[string]string{"error": "invalid ID"})
+	}
+	run, err := store.GetRun(ID)
+	if err != nil {
+		return c.JSON(http.StatusBadGateway, map[string]string{"error": "unable to get build"})
+	}
+
+	return c.JSON(http.StatusOK, run)
 }
