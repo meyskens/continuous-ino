@@ -30,7 +30,8 @@ func main() {
 
 	e := echo.New()
 	e.POST("/webhook", serveWebhook)
-	e.GET("/api/build/:id", handlePush(payload github.WebHookPayload)
+	e.GET("/api/build/:id", serveGetBuild)
+	e.GET("/api/build/all", serveGetAllBuilds)
 
 	e.Static("/", "static")
 	e.Logger.Fatal(e.Start(":80"))

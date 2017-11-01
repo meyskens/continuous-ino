@@ -40,3 +40,7 @@ func serveGetBuild(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, run)
 }
+
+func serveGetAllBuilds(c echo.Context) error {
+	return c.JSON(http.StatusOK, store.GetAllRuns())
+}
