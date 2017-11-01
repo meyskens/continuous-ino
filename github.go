@@ -45,6 +45,7 @@ func handlePush(payload github.WebHookPayload) {
 	currentRun.Repo = payload.Repo.GetFullName()
 	currentRun.Time = time.Now()
 	currentRun.Output = []storage.RunOutput{}
+	currentRun.SHA = payload.GetAfter()
 	store.SaveRun(currentRun)
 
 	setPending(payload)

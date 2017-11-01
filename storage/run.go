@@ -10,6 +10,7 @@ import (
 type Run struct {
 	ID     uint64
 	Repo   string
+	SHA    string
 	Time   time.Time
 	Output []RunOutput
 }
