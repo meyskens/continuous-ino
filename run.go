@@ -29,9 +29,14 @@ func runTests(path string, buildFile buildfile.BuildFile) (succeeded bool, errs 
 		if err != nil {
 			succeeded = false
 			errs = append(errs, err)
+			// save to db in real time bro
+			currentRun.Errors = errs
+			store.SaveRun(currentRun)
 		}
 	}
 
+	currentRun.Running = false
+	store.SaveRun(currentRun)
 	return
 }
 

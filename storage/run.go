@@ -8,11 +8,13 @@ import (
 
 // Run is the format to store a run in
 type Run struct {
-	ID     uint64      `json:"id"`
-	Repo   string      `json:"repo"`
-	SHA    string      `json:"sha"`
-	Time   time.Time   `json:"time"`
-	Output []RunOutput `json:"output"`
+	ID      uint64      `json:"id"`
+	Repo    string      `json:"repo"`
+	SHA     string      `json:"sha"`
+	Time    time.Time   `json:"time"`
+	Output  []RunOutput `json:"output"`
+	Errors  []string    `json:"errors"`
+	Running bool        `json:"running"`
 }
 
 // RunOutput is the output of a specific run of a test
