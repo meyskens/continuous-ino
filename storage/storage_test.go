@@ -73,8 +73,8 @@ func TestGetAllFirstToLast(t *testing.T) {
 	runs := []Run{}
 
 	for _, b := range bytes {
-		runs, _ := DecodeRun(b)
-		out = append(out, run)
+		run, _ := DecodeRun(b)
+		runs = append(runs, run)
 	}
 
 	assert.Equal(t, 1, len(runs))
