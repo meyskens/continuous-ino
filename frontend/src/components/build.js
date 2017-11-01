@@ -19,14 +19,16 @@ class Build extends Component {
         if (this.state.loading) {
             return <p>Loading...</p>
         }
+
+        var outputList
         if (this.state.build.output != null) {
-            var outputList = this.state.build.output.map((output, key) => {
+            outputList = this.state.build.output.map((output, key) => {
                 return (
                     <Output key={key} output={output} />
                 );
             })
         } else {
-            var outputList = <p>Waiting for output...</p>
+            outputList = <p>Waiting for output...</p>
         }
 
         return (
