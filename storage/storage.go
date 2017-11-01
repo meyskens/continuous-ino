@@ -41,7 +41,7 @@ func (s *Storage) GetRun(id uint64) (Run, error) {
 
 // GetAllRuns gets all runs done by the system
 func (s *Storage) GetAllRuns() ([]Run, error) {
-	bytes := s.getAll("RUN")
+	bytes := s.getAllReverse("RUN")
 	out := []Run{}
 
 	for _, b := range bytes {

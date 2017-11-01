@@ -43,6 +43,7 @@ func (s *Storage) getData(bucket string, id uint64) (data []byte) {
 	})
 	return
 }
+
 func (s *Storage) getAll(bucket string) (data [][]byte) {
 	data = [][]byte{}
 
@@ -51,6 +52,21 @@ func (s *Storage) getAll(bucket string) (data [][]byte) {
 		c := bucket.Cursor()
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
+			data = append(data, v)
+		}
+		return nil
+	})
+	return
+}
+
+func (s *Storage) getAllReverse(bucket string) (data [][]byte) {
+	data = [][]byte{}
+
+	s.db.Update(func(tx *bolt.Tx) error { // we do create if not exists on a bucket here!
+		bucket := openBucket(tx, bucket)
+		c := bucket.Cursor()
+
+		for k, v := c.Last(); k != nil; k, v = c.Prev() {
 			data = append(data, v)
 		}
 		return nil
