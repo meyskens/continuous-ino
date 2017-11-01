@@ -6,6 +6,7 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"github.com/meyskens/continuous-ino/config"
 	"github.com/meyskens/continuous-ino/storage"
 )
@@ -29,6 +30,8 @@ func main() {
 	store = storage.New(db)
 
 	e := echo.New()
+	e.Use(middleware.CORS())
+
 	e.POST("/webhook", serveWebhook)
 	e.GET("/api/build/:id", serveGetBuild)
 	e.GET("/api/build/all", serveGetAllBuilds)
