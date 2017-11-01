@@ -2,17 +2,33 @@ import React, { Component } from 'react';
 import { Nav, NavItem, } from 'react-bootstrap';
 
 class Builds extends Component {
+    constructor() {
+        super();
+        this.state = {
+            builds: []
+        };
+    }
+
+    componentDidMount() {
+        fetch(`https://continuous-ino.eyskens.me/api/build/all`)
+        .then(result=>result.json())
+        .then(builds=>this.setState({builds}))
+    }
+
     handleSelect(selectedKey) {
         alert(`selected ${selectedKey}`);
     }
     render() {
+        var buildsList = this.state.builds.map((build, key) => {
+            return <NavItem key={ key }>{build.id} - {build.repo}: {build.sha}</NavItem>;
+          })
+
+
         return (
             <div>
                 <h2>Builds</h2>
                 <Nav bsStyle="pills" stacked activeKey={1} onSelect={this.handleSelect}>
-                    <NavItem eventKey={1} href="/home">NavItem 1 content</NavItem>
-                    <NavItem eventKey={2} title="Item">NavItem 2 content</NavItem>
-                    <NavItem eventKey={3} disabled>NavItem 3 content</NavItem>
+                    { buildsList }
                 </Nav>
             </div>
         );
