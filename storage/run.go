@@ -8,19 +8,19 @@ import (
 
 // Run is the format to store a run in
 type Run struct {
-	ID     uint64
-	Repo   string
-	SHA    string
-	Time   time.Time
-	Output []RunOutput
+	ID     uint64      `json:"id"`
+	Repo   string      `json:"repo"`
+	SHA    string      `json:"sha"`
+	Time   time.Time   `json:"time"`
+	Output []RunOutput `json:"output"`
 }
 
 // RunOutput is the output of a specific run of a test
 type RunOutput struct {
-	Name   string
-	File   string
-	Step   string
-	Output string
+	Name   string `json:"name"`
+	File   string `json:"file"`
+	Step   string `json:"step"`
+	Output string `json:"output"`
 }
 
 // Encode encodes a run to gob
