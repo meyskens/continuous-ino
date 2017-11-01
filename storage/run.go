@@ -13,7 +13,7 @@ type Run struct {
 	SHA     string      `json:"sha"`
 	Time    time.Time   `json:"time"`
 	Output  []RunOutput `json:"output"`
-	Errors  []string    `json:"errors"`
+	Errors  []error     `json:"errors"`
 	Running bool        `json:"running"`
 }
 
