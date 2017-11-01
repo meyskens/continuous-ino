@@ -42,5 +42,9 @@ func serveGetBuild(c echo.Context) error {
 }
 
 func serveGetAllBuilds(c echo.Context) error {
-	return c.JSON(http.StatusOK, store.GetAllRuns())
+	runs, err := store.GetAllRuns()
+	if err != nil {
+		return c.JSON(http.StatusBadGateway, map[string]string{"error": "unable to get builds"})
+	}
+	return c.JSON(http.StatusOK, runs)
 }
