@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Output from './output'
+import FontAwesome from 'react-fontawesome';
+import BuildAttribute  from './buildattribute'
 
 class Build extends Component {
     constructor() {
@@ -33,7 +35,7 @@ class Build extends Component {
 
         return (
             <div>
-                <h2>Build #{this.props.match.params.id}</h2>
+                <h2>Build #{this.props.match.params.id} <BuildAttribute build={this.state.build}/></h2>
                 <h3>{this.state.build.repo} - {this.state.build.sha}</h3>
                 { outputList }
             </div>

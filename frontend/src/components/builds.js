@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Nav, NavItem, } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import BuildAttribute  from './buildattribute'
 
 class Builds extends Component {
     constructor() {
@@ -20,7 +21,7 @@ class Builds extends Component {
         var buildsList = this.state.builds.map((build, key) => {
             return (
                 <LinkContainer key={key} to={/build/ + build.id}>
-                    <NavItem>{build.id} - {build.repo}: {build.sha}</NavItem>
+                    <NavItem><BuildAttribute build={build}/> {build.id} - {build.repo}: {build.sha}</NavItem>
                 </LinkContainer>
             );
         })
