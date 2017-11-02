@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Output from './output'
-import FontAwesome from 'react-fontawesome';
 import BuildAttribute  from './buildattribute'
 
 class Build extends Component {
