@@ -52,56 +52,70 @@ func buildAndTestIno(path string, buildFile buildfile.BuildFile, test buildfile.
 	}
 	path = path + "/"
 
-	cmd := execCommand("/bin/bash", "-c", "cd "+path+" && arduino --verify --pref sketchbook.path=$(pwd) --board "+cfg.Arduino.Model+" "+test.File)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	runOutput := storage.RunOutput{}
+	runOutput.File = test.File
+	runOutput.Name = test.Name
+	runOutput.Step = "Upload project"
+
+	_, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	handler := serialhandler.New(cancel)
+
+	// No errors! we can upload!
+	cmd := execCommand("/bin/bash", "-c", "cd "+path+" && arduino --upload --pref sketchbook.path=$(pwd) --board "+cfg.Arduino.Model+" --port "+cfg.Arduino.Port+" "+test.File)
+	cmd.Stdout = &handler
+	cmd.Stderr = &handler
 	err = cmd.Run()
 
-	if err == nil {
-		// No errors! we can upload!
-		cmd = execCommand("/bin/bash", "-c", "cd "+path+" && arduino --upload --pref sketchbook.path=$(pwd) --board "+cfg.Arduino.Model+" --port "+cfg.Arduino.Port+" "+test.File)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		err = cmd.Run()
+	fmt.Println(handler.Output())
+	runOutput.Output += handler.Output()
+
+	currentRun.Output = append(currentRun.Output, runOutput)
+	store.SaveRun(currentRun)
+
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	if err == nil {
-		// No errors! we can run!
-		runOutput := storage.RunOutput{}
-		runOutput.File = test.File
-		runOutput.Name = test.Name
-		runOutput.Step = "Run on Arduino"
+	// No errors! we can run!
+	runOutput = storage.RunOutput{}
+	runOutput.File = test.File
+	runOutput.Name = test.Name
+	runOutput.Step = "Run on Arduino"
 
-		ctx, cancel := context.WithTimeout(context.Background(), timeout)
-		defer cancel()
-		handler := serialhandler.New(cancel)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+	handler = serialhandler.New(cancel)
 
-		port, err := serial.Open(serial.OpenOptions{
-			PortName:        cfg.Arduino.Port,
-			BaudRate:        uint(buildFile.Baud),
-			DataBits:        8,
-			StopBits:        1,
-			MinimumReadSize: 4,
-		})
+	port, err := serial.Open(serial.OpenOptions{
+		PortName:        cfg.Arduino.Port,
+		BaudRate:        uint(buildFile.Baud),
+		DataBits:        8,
+		StopBits:        1,
+		MinimumReadSize: 4,
+	})
 
-		if err == nil {
-			defer port.Close()
-			go pipe(port, &handler)
-
-			<-ctx.Done()
-			fmt.Println(handler.Output())
-			runOutput.Output += handler.Output()
-
-			if len(handler.Errors()) != 0 {
-				err = errors.New(strings.Join(handler.Errors(), "\n"))
-				fmt.Println("Found errors")
-				fmt.Println(err)
-			}
-		}
-
-		currentRun.Output = append(currentRun.Output, runOutput)
-		store.SaveRun(currentRun)
+	if err != nil {
+		return
 	}
+
+	defer port.Close()
+	go pipe(port, &handler)
+
+	<-ctx.Done()
+	fmt.Println(handler.Output())
+	runOutput.Output += handler.Output()
+
+	if len(handler.Errors()) != 0 {
+		err = errors.New(strings.Join(handler.Errors(), "\n"))
+		fmt.Println("Found errors")
+		fmt.Println(err)
+	}
+
+	currentRun.Output = append(currentRun.Output, runOutput)
+	store.SaveRun(currentRun)
+
 	return
 }
 
