@@ -115,7 +115,7 @@ func Test_buildAndTestIno(t *testing.T) {
 				buildFile: TestBuildFile,
 				test:      TestBuildFile.Tests[0],
 			},
-			wantErr: false,
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
